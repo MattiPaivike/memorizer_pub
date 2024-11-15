@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="{% static 'favicon.ico' %}">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet">
+
+    <title>MemoRizer</title>
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <!-- Custom CSS-->
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <!-- Pygments CSS -->
+    <link rel="stylesheet" href="{% static 'pygments.css' %}">
+
+    <!-- HTMX -->
+    <script src="{% static 'htmx/htmx.min.js' %}"></script>
+    <!-- Bootstrap Javascript -->
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="mx-auto d-block text-center">
+            <header>
+                <a href="{% url 'notes' %}">
+                    <h1 class="matrix-command landing_header mb-3">MemoRizer<span class="cursor">|</span></h1>
+                </a>
+            </header>
+        </div>
+        <div class="mb-3 menu_items container mx-auto d-block text-center">
+            {% if user.is_authenticated %}
+                <a href="{% url 'notes' %}">[HOME]</a>
+                <a href="{% url 'post_note' %}">[NEW NOTE]</a>
+                <a href="{% url 'account_profile' %}">[ACCOUNT]</a>
+                <a href="{% url 'about' %}">[ABOUT]</a>
+                <a href="{% url 'account_logout' %}">[LOGOUT]</a>
+            {% else %}
+                <a href="{% url 'account_login' %}">[LOGIN]</a>
+                <a href="{% url 'about' %}">[ABOUT]</a>
+            {% endif %}
+        </div>
+        {% if messages %}
+        {% for message in messages %}
+        <div class="container w-75 alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        
+        <div class="w-100 container">
+            {% if view_name == "NotesView" %}
+            <div>
+            <div>
+            {% else %}
+            <div class="d-flex justify-content-center align-items-center">
+            <div class="col-md-6">
+            {% endif %}	
+                <div id="main-content">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+            </div>
+            </div>
+        </div>
+        
+    </div>
+    <script>
+        document.body.addEventListener('htmx:configRequest', (event) => {
+            event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+        })
+    
+        htmx.onLoad(function(content) {
+            var sortables = content.querySelectorAll(".sortable");
+            for (var i = 0; i < sortables.length; i++) {
+                var sortable = sortables[i];
+                new Sortable(sortable, {
+                    animation: 150,
+                    ghostClass: 'blue-background-class'
+                });
+            }
+        })
+    </script>
+</body>
+</html>

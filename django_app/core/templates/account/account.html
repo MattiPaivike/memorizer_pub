@@ -1,0 +1,10 @@
+{% extends "base.html"%}
+{% block content %}
+<legend class="border-bottom mb-4">Account</legend>
+<div class="menu_items">
+    <ul>
+        <li><a href="{% url 'account_update_prompt' %}">Change OpenAI system message here</a></li>
+        <li><a href="{% url 'account_change_password' %}">Change password</a></li>
+    </ul>
+</div>
+{% endblock content %}

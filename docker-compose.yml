@@ -1,0 +1,73 @@
+services:
+  app:
+    build:
+      context: .
+    volumes:
+      #map application folder created in dockerfile to os filesystem
+      - ./django_app:/app
+      - static_data:/vol/web
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - LOCAL_EXECUTION=0
+      - DEBUG=${DEBUG}
+      - DB_HOST=db-epicmemory
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - CSRF_TRUSTED_ORIGINS=http://127.0.0.1:8000
+      - USE_CELERY=1
+    depends_on:
+      - db-epicmemory
+      - redis
+
+  nginx:
+    build:
+      context: ./nginx_proxy
+    ports:
+      - "8000:8000"
+    volumes:
+      - static_data:/vol/web
+    depends_on:
+      - app
+
+  celery_worker:
+    build:
+      context: .
+    command: start_celeryworker.sh
+    volumes:
+      - ./django_app:/app
+      - static_data:/vol/web
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - LOCAL_EXECUTION=0
+      - DEBUG=${DEBUG}
+      - DB_HOST=db-epicmemory
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      - redis
+      - db-epicmemory
+
+  db-epicmemory:
+    image: postgres:17-alpine
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+    ports:
+      - 5432:5432
+
+  redis:
+    image: redis:7.4.1-alpine
+
+volumes:
+  static_data:

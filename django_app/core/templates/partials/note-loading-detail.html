@@ -1,0 +1,11 @@
+<div
+    hx-get="{% url 'check_note_status_detail' note.pk %}"
+    hx-trigger="load delay:2s"
+    hx-swap="outerHTML"
+    hx-target="this"
+    hx-push-url="false"
+    class="p-2"
+    >
+    <p>Note is being processed...</p>
+    <div class="loader"></div>
+</div>

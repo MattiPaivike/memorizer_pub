@@ -1,0 +1,189 @@
+body {
+    font-family: 'Source Code Pro', monospace;
+}
+
+button {
+  border: none;
+  background-color: #007d2e;
+  padding: 15px 32px;
+  transition-duration: 0.4s;
+  font-family: 'Source Code Pro', monospace;
+  font-size: 16px;
+}
+
+.delete {
+  background-color: #f40f0f;
+  padding: 5px 10px;
+  font-size: 12px;
+}
+  
+button:hover {
+  background-color: #000;
+  color: #007d2e;
+  animation: fadein 600ms;
+  -o-animation: fadein 600ms;
+  -moz-animation: fadein 600ms;
+  -webkit-animation: fadein 600ms;
+  cursor: pointer;
+}
+
+.button {
+  color: #fff;
+}
+
+.landing_header {
+    position: relative;
+    padding-top: 1rem;
+    margin: 0rem auto;
+    z-index: 999;
+  	text-decoration: none;
+  	color: #00cc00;
+  	text-shadow: 0 0 1px #00cc00, 0 0 3px #00cc00;
+}
+
+.card_hover:hover {
+    transform: scale(1.05); /* Scales the card 5% larger */
+    border: 2px solid green; /* Gives a green border */
+    z-index: 1; /* To ensure the hovered card appears above other elements */
+}
+
+.card {
+    transition: transform 0.3s ease, border 0.3s ease; /* Smooth animation for the transform and border properties */
+}
+
+.card h1,
+.card h2,
+.card h3,
+.card h4,
+.card h5 {
+  color: #33FF33;
+}
+
+.matrix-command {
+    color: #33FF33; 
+    font-size: 48px;
+    display: inline-block;
+}
+
+.cursor {
+    display: inline-block;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}
+
+.menu_items {
+    padding: 10px;
+}
+
+a.menu_items{
+  display: block;
+  font-size: 24px;
+}
+
+a:link, a:visited {
+    color: #33FF33;
+    text-decoration: none;
+}
+
+.menu_items .icon {
+  display: none;
+}
+
+.menu_items a:hover {
+  background-color: #007d2e;
+  color: black;
+}
+
+.my_wide {
+  width: 700px;
+}
+
+.limited-width {
+  max-width: 300px;
+}
+
+#main_search_form {
+  margin-top: 10px;
+}
+
+.search-container {
+  width: 600px;
+  margin: auto;
+}
+
+.completed-task {
+  text-decoration: line-through;
+}
+
+.todo-list-items {
+  cursor: pointer;
+}
+
+.todo-list-items:hover {
+  background-color: #0f5132;
+  color: black;
+}
+
+.todo-list-delete-button {
+  border: none;
+  background-color: #e33232;
+  padding: 12px 28px;
+  transition-duration: 0.4s;
+  font-family: 'Source Code Pro', monospace;
+  font-size: 16px;
+}
+
+.large-textarea {
+  width: 100%;
+  height: 400px;
+}
+
+.loader {
+  border: 8px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top: 8px solid darkgreen;
+  width: 60px;
+  height: 60px;
+  animation: spin 2s linear infinite;
+  margin: auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.content-preview {
+  max-height: 150px; /* Adjust the height as needed */
+  overflow: hidden;
+}
+
+.card-body {
+  padding: 10px;
+}
+
+.card-header {
+  padding: 10px;
+}
+
+.card-hover:hover {
+  transform: scale(1.05);
+  border: 2px solid green;
+  z-index: 1;
+}
+
+.completed-task {
+  text-decoration: line-through;
+}
+
+.list-group-item {
+  padding: 5px 10px; /* Reduce padding for list items */
+}

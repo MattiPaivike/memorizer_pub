@@ -1,0 +1,25 @@
+{% extends "base.html"%}
+{% block content %}
+<legend class="border-bottom mb-4">About</legend>
+<div class="container">
+    <p>A simple AI-powered note-taking app. Contact: mattipaivikee@gmail.com for more information.</p>
+    <ul>
+    <li>Use GPT-4 to help you categorize expand your notes, and write todo-lists</li>
+    <li>Edit prompt to experiment with different results from GPT-4</li>
+    </ul>
+</div>
+<legend class="border-bottom mb-4">How it works</legend>
+<div class="container">
+    <p>Code:</p>
+    <ul>
+    <li>Python, Django Webframework 4.2.4</li>
+    <li>Terraform for infrastructure</li>
+    </ul>
+    <p>Infrastructure:</p>
+    <ul>
+    <li>Django runs on AWS Fargate, SQS queue used for messages, Lambda to process SQS. Postgres as database.</li>
+    <li>Azure OpenAI GPT-4</li>
+    <li>To-do list items and categories are created with OpenAI function calling.</li>
+    </ul>
+</div>
+{% endblock content %}

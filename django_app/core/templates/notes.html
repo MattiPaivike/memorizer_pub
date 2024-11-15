@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div>
+    <main id="main_search_form">
+        <form>
+            {% csrf_token %}
+            <div class="search-container">
+                <input type="search"
+                    name="search-notes-field"
+                    style="height: 60px;"
+                    hx-post="{% url 'notes_results' %}"
+                    hx-target="#results"
+                    hx-trigger="keyup changed delay:500ms"
+                    class="form-control w-50 mb-3 mx-auto d-block" 
+                    placeholder="Search notes">
+            </div>
+        </form>
+        <div id="results" >
+            <div id="notes-row">
+                {% include 'partials/notes-list.html' %}
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock content %}

@@ -1,0 +1,25 @@
+<div class="card border-success mb-3 responsive-card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        {{ note.title }}
+    </div>
+    <div class="card-body text-success">
+        <div class="edit-form">
+            <form action="{% url 'update_note' note.pk %}" method="post">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="{{ form.title.id_for_label }}">Title:</label>
+                    <input type="text" id="{{ form.title.id_for_label }}" name="{{ form.title.name }}" value="{{ form.title.value|default:note.title }}" class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.processed_note.id_for_label }}">Note:</label>
+                    <textarea id="{{ form.processed_note.id_for_label }}" name="{{ form.processed_note.name }}" class="mb-3 form-control large-textarea">{{ form.processed_note.value|default:note.processed_note }}</textarea>
+                </div>
+                
+                <button type="submit">Save</button>
+            </form>
+        </div>
+    </div>
+</div>
+

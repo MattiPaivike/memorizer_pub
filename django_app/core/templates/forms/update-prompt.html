@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<legend class="border-bottom mb-4">Edit OpenAI Settings</legend>
+<form action="{% url 'account_update_prompt' %}" method="post">
+    {% csrf_token %}
+    
+    <!-- Note Prompt Field -->
+    <div class="mb-3">
+        <label for="{{ form.note_prompt.id_for_label }}" class="form-label">{{ form.note_prompt.label }}</label>
+        <textarea class="form-control" id="{{ form.note_prompt.id_for_label }}" name="{{ form.note_prompt.name }}" placeholder="{{ form.note_prompt.help_text }}" rows="5">{{ form.note_prompt.value|default:'' }}</textarea>
+    </div>
+    
+    <button type="submit" name="action" value="save">Save Settings</button>
+    <button type="submit" name="action" value="set_defaults">Set to Defaults</button>
+</form>
+{% endblock content %}

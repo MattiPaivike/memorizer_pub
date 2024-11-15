@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+<legend class="border-bottom mb-4">Create new note</legend>
+<form action="{% url 'post_note' %}" method="post">
+    {% csrf_token %}
+    <!-- Title Field -->
+    <div class="mb-3">
+        <label for="{{ form.title.id_for_label }}" class="form-label">{{ form.title.label }}</label>
+        <input type="text" class="form-control" id="{{ form.title.id_for_label }}" name="{{ form.title.name }}" placeholder="{{ form.title.help_text }}" value="{{ form.title.value|default:'' }}">
+    </div>
+
+    <!-- Original Note Field -->
+    <div class="mb-3">
+        <label for="{{ form.original_note.id_for_label }}" class="form-label">Note</label>
+        <textarea class="form-control" id="{{ form.original_note.id_for_label }}" name="{{ form.original_note.name }}" placeholder="{{ form.original_note.help_text }}" rows="5">{{ form.original_note.value|default:'' }}</textarea>
+    </div>
+    
+    <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="{{ form.send_to_openai_checkbox.id_for_label }}" name="{{ form.send_to_openai_checkbox.name }}" {% if form.send_to_openai_checkbox.value %}checked{% endif %}>
+        <label for="{{ form.send_to_openai_checkbox.id_for_label }}" class="form-check-label">{{ form.send_to_openai_checkbox.label }}</label>
+    </div>
+    
+    <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="{{ form.force_openai_todo_list_creation.id_for_label }}" name="{{ form.force_openai_todo_list_creation.name }}" {% if form.force_openai_todo_list_creation.value %}checked{% endif %}>
+        <label for="{{ form.force_openai_todo_list_creation.id_for_label }}" class="form-check-label">{{ form.force_openai_todo_list_creation.label }}</label>
+    </div>
+    
+    <div class="mb-3 menu_items">
+        <a href="{% url 'account_update_prompt' %}">Change OpenAI system message here</a>
+    </div>
+    
+    <button type="submit">Submit Note</button>
+</form>
+{% endblock content %}

@@ -1,0 +1,12 @@
+{% if notes %}
+  <div class="container w-50 mb-3 mx-auto d-block">
+    {% for note in notes %}
+        {% for tag in note.tags.all %}
+          <span class="badge text-bg-secondary">{{ tag.name }}</span>
+        {% endfor %}
+    {% endfor %}
+    
+  </div>
+{% else %}
+ <p>Looks like you do not have any notes yet :)</p>
+{% endif %}

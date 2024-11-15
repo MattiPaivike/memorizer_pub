@@ -1,0 +1,28 @@
+<div>
+    {{ processed_note_md|safe }}
+</div>
+{% if todos %}
+    <div id="todo-list-detail">
+        <h5 class="mt-3">To-do List:</h5>
+        <ul class="list-group mt-2">
+            {% for todo in todos %}
+            <div class="d-flex align-items-center">
+            <li 
+                class="todo-list-items list-group-item d-flex justify-content-between align-items-center {% if todo.is_completed %}list-group-item-success{% endif %} flex-grow-1"
+                hx-trigger="click"
+                hx-post="{% url 'toggle_todo' note.pk todo.id %}"
+                hx-target="#todo-list-detail"
+            >
+                <span {% if todo.is_completed %}class="completed-task"{% endif %}>{{ todo.task }}</span>
+            </li>
+            
+            <button 
+            class="todo-list-delete-button"
+            hx-delete="{% url 'delete_todo' note.pk todo.id %}"
+            hx-target="#todo-list-detail">Delete
+            </button>
+            </div>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}

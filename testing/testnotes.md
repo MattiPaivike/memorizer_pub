@@ -1,0 +1,11 @@
+Software development notes
+Met for dev sync: current sprint on track but found critical bugs in login module—fix by EOD. UI redesign kickoff tomorrow at 10am, need initial mockups by Friday. Plan to deploy latest build Wednesday evening; ensure all tests pass. Backend team to integrate new API changes by next Mon. Assigning Alex to auth features, Jamie to dashboard UI. Client demo set for next Thursday, finalize features by then. Discussed possible tech debt cleanup next sprint. Reminder: update Jira tickets before end of day. Next meeting Tue at 2pm, everyone bring progress updates and blockers.
+
+software meeting notes
+"Today's dev meeting: feature X almost done, need code review by EOD; encountered performance issues in search algorithm, prioritize optimization; front-end team to finalize responsive design by Wednesday; set up meeting with QA for testing schedule; database schema updates required, Maria to handle migrations; ensure CI/CD pipeline stable after latest commits; discuss user feedback from beta release, incorporate top 5 requests; prepare documentation for new API endpoints; assign debugging tasks to team members; set next sprint goals and backlog items; remind everyone to update Slack statuses with availability; next meeting scheduled for Friday 3pm, prepare progress reports."
+
+marketing
+Marketing sync: finalize Q4 campaign themes, allocate $10k for social ads, design team to deliver graphics by Monday, coordinate influencer outreach, review last month's engagement stats, adjust SEO keywords, draft email newsletter by Wednesday, assign Sarah to content creation & Tom to analytics, plan product launch event for next month, set deadlines for blog posts, discuss competitor strategies, ensure all assets ready for Friday launch, next meeting Thursday 2pm with progress updates.
+
+hr meeting
+HR sync: finalize benefits updates by Friday, schedule onboarding for 5 new hires next week, address pending employee grievances, review attendance and PTO reports, plan Q2 team-building event, update employee handbook, assign Lisa to recruitment drive, discuss remote work policy adjustments, ensure compliance with latest labor laws, prepare training materials, set deadlines for performance reviews, coordinate with finance on payroll changes, next meeting Monday at 10am with status updates.

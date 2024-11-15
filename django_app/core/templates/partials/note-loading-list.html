@@ -1,0 +1,20 @@
+<div
+    hx-get="{% url 'check_note_status_list' note.pk %}"
+    hx-trigger="load delay:2s"
+    hx-swap="outerHTML"
+    hx-target="this"
+    hx-push-url="false"
+>
+    <div class="card-header p-2">
+        {{ note.title }}
+    </div>
+    <div class="card-body p-2 d-flex flex-column">
+        <blockquote class="blockquote mb-0 content-preview">
+            <p>Note is being processed...</p>
+            <div class="loader"></div>
+            <footer class="blockquote-footer mt-3">
+                <cite title="Source Title">{{ note.created_at|date:"d/m/Y H:i" }}</cite>
+            </footer>
+        </blockquote>
+    </div>
+</div>

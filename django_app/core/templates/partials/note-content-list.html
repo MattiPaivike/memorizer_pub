@@ -1,0 +1,28 @@
+<div class="card-header p-2">
+    {{ note_extra.note.title }}
+</div>
+<div class="card-body p-2 d-flex flex-column">
+    <blockquote class="blockquote mb-0 content-preview">
+        {{ note_extra.rendered_md|safe }}
+    </blockquote>
+    {% if note_extra.todos %}
+    <h6 class="text-light mt-1">To-do List:</h6>
+    <ul class="list-group mt-1">
+        {% for todo in note_extra.todos|slice:":3" %}
+        <li class="list-group-item p-1 d-flex justify-content-between align-items-center {% if todo.is_completed %}list-group-item-success{% endif %}">
+            <span {% if todo.is_completed %}class="completed-task"{% endif %}>{{ todo.task }}</span>
+        </li>
+        {% endfor %}
+        {% if note_extra.todos|length > 3 %}
+            <p class="text-muted mb-0 mt-1">...and {{ note_extra.todos|length|add:"-3" }} more</p>
+        {% endif %}
+    </ul>
+    {% endif %}
+    <footer class="blockquote-footer mt-1">
+        <cite title="Source Title">{{ note_extra.note.created_at|date:"d/m/Y H:i" }}</cite>
+    </footer>
+    {% for tag in note_extra.note.tags.all %}
+    <span class="badge bg-secondary mt-1">{{ tag.name }}</span>
+    {% endfor %}
+</div>
+

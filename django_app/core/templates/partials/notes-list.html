@@ -1,0 +1,80 @@
+<div class="row">
+    {% if notes_with_extras %}
+        {% for note_extra in notes_with_extras %}
+        <div class="col-12 col-md-6 col-lg-4 mb-3">
+            <div style="cursor: pointer;"
+                hx-trigger="click"
+                hx-get="{% url 'note_detail' note_extra.note.pk %}"
+                hx-push-url="/detail/{{ note_extra.note.pk }}"
+                hx-target="#main-content"
+                class="card card_hover border-success h-100"
+            >
+                {% if note_extra.note.processed %}
+                    <div class="card-header p-2">
+                        {{ note_extra.note.title }}
+                    </div>
+                    <div class="card-body p-2 d-flex flex-column">
+                        <blockquote class="blockquote mb-0 content-preview">
+                            {{ note_extra.rendered_md|safe }}
+                        </blockquote>
+                        {% if note_extra.todos %}
+                        <h6 class="text-light mt-1">To-do List:</h6>
+                        <ul class="list-group mt-1">
+                            {% for todo in note_extra.todos|slice:":3" %}
+                            <li class="list-group-item p-1 d-flex justify-content-between align-items-center {% if todo.is_completed %}list-group-item-success{% endif %}">
+                                <span {% if todo.is_completed %}class="completed-task"{% endif %}>{{ todo.task }}</span>
+                            </li>
+                            {% endfor %}
+                            {% if note_extra.todos|length > 3 %}
+                                <p class="text-muted mb-0 mt-1">...and {{ note_extra.todos|length|add:"-3" }} more</p>
+                            {% endif %}
+                        </ul>
+                        {% endif %}
+                        <footer class="blockquote-footer mt-3">
+                            <cite title="Source Title">{{ note_extra.note.created_at|date:"d/m/Y H:i" }}</cite>
+                        </footer>
+                        {% for tag in note_extra.note.tags.all %}
+                        <span class="badge bg-secondary mt-1">{{ tag.name }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <!-- Loader if note is still processing -->
+                    <div
+                        hx-get="{% url 'check_note_status_list' note_extra.note.pk %}"
+                        hx-trigger="load delay:2s"
+                        hx-swap="outerHTML"
+                        hx-target="this"
+                        hx-push-url="false"
+                    >
+                        <div class="card-header p-2">
+                            {{ note_extra.note.title }}
+                        </div>
+                        <div class="card-body p-2 d-flex flex-column">
+                            <blockquote class="blockquote mb-0 content-preview">
+                                <p>Note is being processed...</p>
+                                <div class="loader"></div>
+                                <footer class="blockquote-footer mt-3">
+                                    <cite title="Source Title">{{ note_extra.note.created_at|date:"d/m/Y H:i" }}</cite>
+                                </footer>
+                            </blockquote>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+        <div class="col-12 mb-5" 
+            {% if not is_search and notes_with_extras|length >= 8 %}
+                hx-get="{% url 'notes' %}?page={{ page_obj.number|add:1 }}"
+                hx-trigger="revealed"
+                hx-swap="beforeend"  
+                hx-target="#notes-row"  
+            {% endif %}
+        > 
+        </div>
+    {% else %}
+        <div class="col-12 d-flex justify-content-center align-items-center">
+            <p>Could not find any notes.. <a href="{% url 'post_note' %}">add a new one?</a></p>
+        </div>
+    {% endif %}
+</div>

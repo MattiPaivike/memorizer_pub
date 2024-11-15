@@ -1,0 +1,37 @@
+name: Build and Push Django App
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'django_app/**'
+      - 'scripts/gunicorn/**'
+      - 'Dockerfile'
+  workflow_dispatch:
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        run: |
+          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_URL_DJANGO }}
+
+      - name: Build and Push Django Service Container
+        run: |
+          docker build -t ${{ secrets.AWS_ECR_URL_DJANGO }}:${{ github.sha }} -t ${{ secrets.AWS_ECR_URL_DJANGO }}:latest .
+          docker push ${{ secrets.AWS_ECR_URL_DJANGO }}:${{ github.sha }}
+          docker push ${{ secrets.AWS_ECR_URL_DJANGO }}:latest
+
