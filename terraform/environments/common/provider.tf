@@ -13,11 +13,8 @@ terraform {
 
 terraform {
   backend "s3" {
-    bucket         = "epicmemory-tf-state12351531351341"
     key            = "common/epicmemory.tfstate"
-    region         = "eu-north-1"
     encrypt        = true
-    dynamodb_table = "epicmemory-tf-state-lock"
   }
 }
 

@@ -2,36 +2,24 @@
 
 ## Prerequisites
 
-Create `variables.tfvars` file in `terraform/environments/dev` with the following content:
 
+* In AWS console, create a s3 bucket (for terraform state) and DynamoDB table (for terraform lock). Set DynamoDB partition key to `LockID`. 
+
+For each non-common environment, for example `dev`, create a `variables.tfvars` file in `terraform/environments/dev` folder with the following content:
 ```
 bastion_allow_ips = ["your-ip/32"]
 domain_name="your-domain.com"
 subdomain_name="your-subdomain"
 app_allow_ips = ["0.0.0.0/0"]
 aws_region= "<aws_region>"
+tf_state_bucket_name=<aws_state_bucket_name_here>
 ```
 
-* Create s3 bucket (for terraform state) and DynamoDB table (for terraform lock). Set DynamoDB partition key to `LockID`. Create `state_bucket_config.tf` file for all environments with the following content:
+After creating the state bucket and lock table, create a `backend_config.tfbackend` file for all environments (including `common`). Set the following data in the file:
 ```
-terraform {
-  backend "s3" {
-    bucket         = "<BUCKET_NAME_HERE>"
-    key            = "dev/epicmemory.tfstate"
-    region         = "eu-north-1"
-    encrypt        = true
-    dynamodb_table = "epicmemory-tf-state-lock"
-  }
-}
-
-data "terraform_remote_state" "common" {
-  backend = "s3"
-  config = {
-    bucket = "<BUCKET_NAME_HERE>"
-    key    = "common/epicmemory.tfstate"
-    region = "eu-north-1"
-  }
-}
+bucket         = <aws_state_bucket_name_here>
+region         = "eu-north-1"
+dynamodb_table = <aws_dynamodb_table_name_here>
 ```
 
 * The terraform expects an ssh-key pair called `memorizer-bastion-key` for bastion usage. Create this in EC2 console before running terraform.
@@ -42,11 +30,11 @@ Setup common environment first
 
 ```
 cd environments/common
-terraform init
+terraform init -backend-config=backend_config.tfbackend
 terraform apply -var-file="variables.tfvars"
 ```
 
-After creating the common environment, upload the ECR images to their ECR repositories. Make sure the tags match the configuration.
+After creating the common environment, upload the Docker images to their ECR repositories. Make sure the tags match the configuration.
 
 Login to ECR:
 ```
@@ -72,8 +60,8 @@ docker push <aws-account-number-here>.dkr.ecr.eu-north-1.amazonaws.com/memorizer
 Check `terraform/environments/dev/variables.tf` and then setup dev environment:
 ```
 cd environments/dev
-terraform init
-terraform apply
+terraform init -backend-config=backend_config.tfbackend
+terraform apply -var-file="variables.tfvars"
 ```
 
 ## Create Django superuser in AWS
