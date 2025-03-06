@@ -1,12 +1,6 @@
 name: Build and Push Consumer Service
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'consumer_service/**'
-      - 'Dockerfile_consumer_service'
   workflow_dispatch:
 
 jobs:

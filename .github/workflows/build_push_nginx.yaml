@@ -1,11 +1,6 @@
 name: Build and Push Nginx Proxy
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'nginx_proxy/**'
   workflow_dispatch:
 
 jobs:

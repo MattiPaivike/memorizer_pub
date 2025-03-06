@@ -1,13 +1,6 @@
 name: Build and Push Django App
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'django_app/**'
-      - 'scripts/gunicorn/**'
-      - 'Dockerfile'
   workflow_dispatch:
 
 jobs:
