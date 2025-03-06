@@ -1,8 +1,27 @@
 # MemoRizer
 
-An AI powered note taking application built with Django and HTMX.
+Memorizer is an AI powered note taking application written in Python/Django/HTMX.
 
-## Running app locally
+![Demo GIF](pictures/demo.gif)
+
+# Deployment
+
+This Terraform will deploy a production ready ECS cluster, database etc to run the application. All you need is a domain name hosted on AWS:
+
+See `terraform/` folder for infrastructure setup.
+
+Additionally we have github actions CI/CD for building and pushing the containers to AWS ECR. Note that you must have the following github actions secrets configured:
+
+```
+AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY
+AWS_REGION
+AWS_ECR_URL_CONSUMER_SERVICE
+AWS_ECR_URL_DJANGO
+AWS_ECR_URL_NGINX
+```
+
+## Running app locally in docker-compose
 
 Create `.env` file, see `env.sample`.
 
@@ -46,7 +65,3 @@ Then run (copy the container id from the `docker ps` output and replace `<CONTAI
 ```
 docker exec -it <CONTAINER_ID_HERE> sh -c "python manage.py createsuperuser"
 ```
-
-# Deployment
-
-See `terraform/` folder for infrastructure setup.

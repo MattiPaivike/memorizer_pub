@@ -2,8 +2,7 @@
 
 ## Prerequisites
 
-
-* In AWS console, create a s3 bucket (for terraform state) and DynamoDB table (for terraform lock). Set DynamoDB partition key to `LockID`. 
+In AWS console, create a s3 bucket (for terraform state) and DynamoDB table (for terraform lock). Set DynamoDB partition key to `LockID`. 
 
 For each non-common environment, for example `dev`, create a `variables.tfvars` file in `terraform/environments/dev` folder with the following content:
 ```
@@ -24,7 +23,7 @@ dynamodb_table = <aws_dynamodb_table_name_here>
 
 * The terraform expects an ssh-key pair called `memorizer-bastion-key` for bastion usage. Create this in EC2 console before running terraform.
 
-* Additionally the Terraform expects route53 hosted zone root domain with `NS`, `SOA`, `A` and `CNAME` records. This is created automatically after purchasing a domain in Route53.
+* Additionally the Terraform expects route53 hosted zone root domain with `NS`, `SOA`, `A` and `CNAME` records. This is created automatically after purchasing a domain in AWS Route53.
 
 Setup common environment first
 
