@@ -9,4 +9,4 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         if not OpenAISettings.objects.exists():
             OpenAISettings.objects.create()
-            print("Initial data created")
+        print("Initial data created")
