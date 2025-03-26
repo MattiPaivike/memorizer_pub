@@ -8,6 +8,8 @@
 
 ## Environment Structure
 
+To run all of the following, you will need sufficient privileges in AWS and you must be signed in to the AWS CLI. I recommend you use something like `aws-vault`.
+
 This Terraform project is organized into the following environments:
 `environments/common` for common resources such as IAM.
 `environments/dev` for development environment
@@ -18,22 +20,27 @@ For each additional environment you need (such as staging or production), simply
 
 After creating the S3 state bucket and DynamoDB lock table, create a `backend_config.tfbackend` file for all environments (including `common`). Add the following content to each file:
 
+Create these files at:
+- `environments/common/backend_config.tfbackend`
+- `environments/dev/backend_config.tfbackend`
+- (and any other environments you've added)
+
+`tfbackend` file contents:
 ```
 bucket         = <aws_state_bucket_name_here>
 region         = <aws_region>
 dynamodb_table = <aws_dynamodb_table_name_here>
 ```
 
-Create these files at:
-- `environments/common/backend_config.tfbackend`
-- `environments/dev/backend_config.tfbackend`
-- (and any other environments you've added)
-
 ### Creating variables.tfvars Files
 
 For each environment (except `common`), create a `variables.tfvars` file. For example, for the dev environment, create `terraform/environments/dev/variables.tfvars` with the following content:
 
 ```
+django_superuser_name = "your-name" # Django superuser info for AWS ECS batch job
+django_superuser_email = "your-email" # Django superuser info for AWS ECS batch job
+django_superuser_password = "your-password" # Django superuser info for AWS ECS batch job
+openai_api_key ="123" # OpenAI API key
 bastion_allow_ips = ["your-ip/32"]  # IP address(es) to allow connection to bastion host
 domain_name = "your-domain.com"     # Domain name for your application
 subdomain_name = "your-subdomain"   # Subdomain name (optional)
@@ -55,6 +62,8 @@ terraform apply
 ### 2. Build and Upload Docker Images
 
 After creating the common environment, build and upload the Docker images to their ECR repositories. Ensure the image tags match your configuration.
+
+You can also build and push the containers with `aws_ecr_build_and_push.py` script.
 
 Login to ECR with AWS CLI:
 ```bash
@@ -90,7 +99,14 @@ terraform apply -var-file="variables.tfvars"
 
 ## Post-Deployment: Creating a Django Superuser
 
-To create a Django superuser via the bastion host:
+Use the `start_batch_job.py` python script to start an AWS ECS batch task that will create the superuser. In this case the following terraform variables are needed:
+```
+django_superuser_name = "your-name" # Django superuser info for AWS ECS batch job
+django_superuser_email = "your-email" # Django superuser info for AWS ECS batch job
+django_superuser_password = "your-password" # Django superuser info for AWS ECS batch job
+```
+
+Additionally you can create a Django superuser via the bastion host:
 
 1. SSH into the bastion host
 2. Run the following commands:
