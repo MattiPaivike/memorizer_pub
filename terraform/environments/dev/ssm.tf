@@ -17,7 +17,7 @@ module "ssm_open_ai_api_key" {
   source = "../../modules/ssm"
   prefix = var.prefix
   name   = "openai-api-key"
-  value  = "temp"
+  value  = var.openai_api_key
 }
 
 module "ssm_azure_openai_api_base_url" {
@@ -82,6 +82,26 @@ variable "prefix" {
   default     = "dev-memorizer"
 }
 
+module "ssm_django_superuser_name" {
+  source = "../../modules/ssm"
+  prefix = var.prefix
+  name   = "django-superuser-name"
+  value  = var.django_superuser_name
+}
+
+module "ssm_django_superuser_email" {
+  source = "../../modules/ssm"
+  prefix = var.prefix
+  name   = "django-superuser-email"
+  value  = var.django_superuser_email
+}
+
+module "ssm_django_superuser_password" {
+  source = "../../modules/ssm"
+  prefix = var.prefix
+  name   = "django-superuser-password"
+  value  = var.django_superuser_password
+}
 # root module - random password resources
 resource "random_password" "django_secret_key" {
   length           = 16

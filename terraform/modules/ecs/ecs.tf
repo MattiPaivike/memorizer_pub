@@ -218,6 +218,64 @@ resource "aws_ecs_task_definition" "api" {
   }
 }
 
+resource "aws_ecs_task_definition" "batch_job" {
+  family                   = "${var.prefix}-django-batch"
+  requires_compatibilities = ["FARGATE"]
+  network_mode             = "awsvpc"
+  cpu                      = 1024
+  memory                   = 2048
+  execution_role_arn       = aws_iam_role.task_execution_role.arn
+  task_role_arn           = aws_iam_role.app_iam_role.arn
+
+  container_definitions = jsonencode([
+    {
+      "name" : "batch",
+      "image" : "${var.ecr_repository_url_django}:${var.django_ecr_tag}",
+      "cpu" : 1024,
+      "memory" : 2048,
+      "essential" : true,
+      "mountPoints" : [
+        {
+          "readOnly" : false,
+          "containerPath" : "/vol/web",
+          "sourceVolume" : "static"
+        }
+      ],
+      "logConfiguration" : {
+        "logDriver" : "awslogs",
+        "options" : {
+          "awslogs-group" : "${aws_cloudwatch_log_group.ecs_task_logs.name}",
+          "awslogs-region" : "${var.aws_region}",
+          "awslogs-stream-prefix" : "batch"
+        }
+      },
+      "secrets" : [
+        for key, value in var.service_secrets : {
+          "name"      : key,
+          "valueFrom" : value
+        }
+      ],
+      "environment" : [
+        {
+          "name" : "SQS_URL",
+          "value" : "${var.sqs_queue_id}"
+        },
+        {
+          "name" : "DEBUG",
+          "value" : "1"
+        },
+        {
+          "name" : "LOCAL_EXECUTION",
+          "value" : "0"
+        }
+      ]
+    }
+  ])
+
+  volume {
+    name = "static"
+  }
+}
 
 resource "aws_ecs_service" "api" {
   name            = "${var.prefix}-django"

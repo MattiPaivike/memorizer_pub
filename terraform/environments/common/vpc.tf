@@ -1,6 +1,6 @@
 module "vpc" {
   source         = "../../modules/vpc"
-  vpc_cidr_block = "10.177.0.0/16"
+  vpc_cidr_block = "10.200.0.0/16"
 }
 
 output "vpc_id" {

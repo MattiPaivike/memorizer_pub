@@ -22,3 +22,43 @@ variable "app_allow_ips" {
   description = "List of IP addresses to allow to application"
   type        = list(string)
 }
+
+variable "openai_api_key" {
+  description = "OpenAI API key"
+  type        = string
+  sensitive   = true
+}
+
+variable "django_superuser_name" {
+  description = "Django superuser name"
+  type        = string
+  sensitive   = true
+}
+
+variable "django_superuser_email" {
+  description = "Django superuser email"
+  type        = string
+  sensitive   = true
+}
+
+variable "django_superuser_password" {
+  description = "Django superuser password"
+  type        = string
+  sensitive   = true
+}
+
+variable "tf_state_bucket_name" {
+  description = "The name of the S3 bucket for storing Terraform state"
+  type        = string
+}
+
+
+
+
+
+
+
+
+
+
+
