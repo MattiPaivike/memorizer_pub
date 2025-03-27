@@ -7,22 +7,14 @@ services:
       - ./django_app:/app
       - static_data:/vol/web
     environment:
-      - SECRET_KEY=${SECRET_KEY}
       - LOCAL_EXECUTION=0
-      - DEBUG=${DEBUG}
       - DB_HOST=db-epicmemory
-      - DB_NAME=${DB_NAME}
-      - DB_USER=${DB_USER}
-      - DB_PASS=${DB_PASS}
-      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - DJANGO_SUPERUSER_NAME=${DJANGO_SUPERUSER_NAME}
-      - DJANGO_SUPERUSER_EMAIL=${DJANGO_SUPERUSER_EMAIL}
-      - DJANGO_SUPERUSER_PASSWORD=${DJANGO_SUPERUSER_PASSWORD}
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
       - CSRF_TRUSTED_ORIGINS=http://127.0.0.1:8000
       - USE_CELERY=1
+    env_file:
+      - ./.env
     depends_on:
       - db-epicmemory
       - redis
@@ -45,17 +37,12 @@ services:
       - ./django_app:/app
       - static_data:/vol/web
     environment:
-      - SECRET_KEY=${SECRET_KEY}
       - LOCAL_EXECUTION=0
-      - DEBUG=${DEBUG}
       - DB_HOST=db-epicmemory
-      - DB_NAME=${DB_NAME}
-      - DB_USER=${DB_USER}
-      - DB_PASS=${DB_PASS}
-      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    env_file:
+      - ./.env
     depends_on:
       - redis
       - db-epicmemory
